@@ -1,8 +1,7 @@
-import random, re, datetime
-import board
+import random
 import game
 
-from typing import Dict, Tuple, List, Optional, Callable
+from typing import Tuple
 
 class Agent(object):
     """
