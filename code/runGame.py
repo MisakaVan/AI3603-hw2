@@ -46,7 +46,7 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
             legal_actions = ccgame.opp_actions(state)
             if agent.opp_action not in legal_actions:
                 agent.opp_action = random.choice(legal_actions)
-            state = ccgame.opp_succ(state, agent.opp_action, agent.action[1])
+            state = ccgame.opp_succ(state, agent.opp_action, agent.action)
 
     display_board.board = state[1]
     display_board.draw()
