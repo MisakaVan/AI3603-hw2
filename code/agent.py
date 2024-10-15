@@ -1,24 +1,27 @@
 import random, re, datetime
 import board
+import game
+
+from typing import Dict, Tuple, List, Optional, Callable
 
 class Agent(object):
     """
     Base class for all agents.
     """
-    def __init__(self, game):
+    def __init__(self, game: game.ChineseChecker):
         """
         Initializes the agent with the game instance.
         """
         self.game = game
         self.action = None
 
-    def getAction(self, state):
+    def getAction(self, state: Tuple[int, board.Board]) -> None:
         """
         Abstract method to get the action for the current state.
         """
         raise Exception("Not implemented yet")
 
-    def oppAction(self, state):
+    def oppAction(self, state: Tuple[int, board.Board]) -> None:
         """
         Abstract method to get the opponent's action for the current state.
         """
