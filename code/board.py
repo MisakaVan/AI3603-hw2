@@ -1,3 +1,5 @@
+from typing import List, Optional, Tuple, Dict, Callable
+
 class Board(object):
     """
     Board class represents a game board for a two-player game.
@@ -20,7 +22,7 @@ class Board(object):
         self.size = size
         self.piece_rows = piece_rows
         self.max_iter = max_iter
-        self.board_status = {}
+        self.board_status: Dict[Tuple[int, int], int] = {}
         for row in range(1, size + 1):
             for col in range(1, self.getColNum(row) + 1):
                 if row <= piece_rows:
@@ -41,7 +43,7 @@ class Board(object):
         self.board_status[(size * 2 - 2, 1)] = 3
         self.board_status[(size * 2 - 2, 2)] = 3
 
-    def getColNum(self, row):
+    def getColNum(self, row: int) -> int:
         """
         Returns the number of columns in the given row.
 
@@ -56,7 +58,7 @@ class Board(object):
         else:
             return self.size * 2 - row
 
-    def isEmptyPosition(self, pos):
+    def isEmptyPosition(self, pos: Tuple[int, int]) -> bool:
         """
         Checks if the given position is empty.
 
@@ -68,7 +70,7 @@ class Board(object):
         """
         return self.board_status[pos] == 0
 
-    def leftPosition(self, pos):
+    def leftPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the left of the given position.
 
@@ -83,7 +85,7 @@ class Board(object):
         if (row, col - 1) in self.board_status.keys():
             return (row, col - 1)
 
-    def rightPosition(self, pos):
+    def rightPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the right of the given position.
 
@@ -98,7 +100,7 @@ class Board(object):
         if (row, col + 1) in self.board_status.keys():
             return (row, col + 1)
 
-    def upLeftPosition(self, pos):
+    def upLeftPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the upper left of the given position.
 
@@ -115,7 +117,7 @@ class Board(object):
         if row > self.size and (row - 1, col) in self.board_status.keys():
             return (row - 1, col)
 
-    def upRightPosition(self, pos):
+    def upRightPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the upper right of the given position.
 
@@ -132,7 +134,7 @@ class Board(object):
         if row > self.size and (row - 1, col + 1) in self.board_status.keys():
             return (row - 1, col + 1)
 
-    def downLeftPosition(self, pos):
+    def downLeftPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the lower left of the given position.
 
@@ -149,7 +151,7 @@ class Board(object):
         if row >= self.size and (row + 1, col - 1) in self.board_status.keys():
             return (row + 1, col - 1)
 
-    def downRightPosition(self, pos):
+    def downRightPosition(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
         """
         Returns the position to the lower right of the given position.
 
@@ -166,7 +168,7 @@ class Board(object):
         if row >= self.size and (row + 1, col) in self.board_status.keys():
             return (row + 1, col)
 
-    def adjacentPositions(self, pos):
+    def adjacentPositions(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """
         Returns a list of positions adjacent to the given position.
 
@@ -185,7 +187,7 @@ class Board(object):
         result.append(self.downRightPosition(pos))
         return [x for x in result if x is not None]
 
-    def getPlayerPiecePositions(self, player):
+    def getPlayerPiecePositions(self, player: int) -> List[Tuple[int, int]]:
         """
         Returns a list of positions occupied by the given player's pieces.
 
@@ -199,7 +201,7 @@ class Board(object):
             pos for pos, piece in self.board_status.items() if piece == player or piece == player + 2
         ]
 
-    def getOneDirectionHopPosition(self, pos, dir_func):
+    def getOneDirectionHopPosition(self, pos: Tuple[int, int], dir_func: Callable[[Tuple[int, int]], Optional[Tuple[int, int]]]) -> Optional[Tuple[int, int]]:
         """
         Returns the possible target hop position in the direction designated by dir_func.
 
@@ -227,7 +229,7 @@ class Board(object):
             if count == 0 and target_position is not None and self.board_status[target_position] == 0:
                 return target_position
 
-    def getOneHopPositions(self, pos):
+    def getOneHopPositions(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """
         Returns a list of positions that can be reached from the given position in one hop.
 
@@ -246,7 +248,7 @@ class Board(object):
         result.append(self.getOneDirectionHopPosition(pos, self.downRightPosition))
         return [x for x in result if x is not None]
 
-    def getAllHopPositions(self, pos):
+    def getAllHopPositions(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """
         Returns all positions that can be reached from the given position in several hops.
 
@@ -291,10 +293,11 @@ class Board(object):
 
         if player1_score > player2_score:
             return 1
-        else:
-            return 0
+        elif player1_score < player2_score:
+            return -1
+        return 0
 
-    def ifPlayerWin(self, player, iter):
+    def ifPlayerWin(self, player: int, iter: int):
         """
         Checks if the given player has won the game.
 
@@ -331,7 +334,7 @@ class Board(object):
                         return False
             return True
 
-    def isEnd(self, iter):
+    def isEnd(self, iter: int) -> Tuple[bool, Optional[int]]:
         """
         Checks if the game has ended and returns the result.
 
