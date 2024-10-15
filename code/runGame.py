@@ -55,8 +55,11 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     time.sleep(0.1)
 
     end = datetime.datetime.now()
-    if ccgame.isEnd(state, iter):
-        return state[1].isEnd(iter)[1]  # return winner
+    # if ccgame.isEnd(state, iter):
+    #     return state[1].isEnd(iter)[1]  # return winner
+    is_end, winner = ccgame.board.isEnd(iter)
+    if is_end:
+        return winner  # type: ignore
     else:  # stuck situation
         print("stuck!")
         return 0
@@ -126,7 +129,7 @@ if __name__ == "__main__":
     ccgame = ChineseChecker(10, 4)
     root = tk.Tk()
     display_board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)
-    display_board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+    display_board.pack(side="top", fill="both", expand=True, padx=4, pady=4)
     B = tk.Button(display_board, text="Start", command=lambda: callback(ccgame=ccgame))
     B.pack()
     root.mainloop()
