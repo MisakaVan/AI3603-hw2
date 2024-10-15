@@ -38,8 +38,8 @@ class Board(object):
                 else:
                     self.board_status[(row, col)] = 1
 
-        self.board_status[(size * 2 - piece_rows + 2, 1)] = 3
-        self.board_status[(size * 2 - piece_rows + 2, 2)] = 3
+        self.board_status[(size * 2 - 2, 1)] = 3
+        self.board_status[(size * 2 - 2, 2)] = 3
 
     def getColNum(self, row):
         """
