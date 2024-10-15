@@ -13,7 +13,8 @@ class Agent(object):
         Initializes the agent with the game instance.
         """
         self.game = game
-        self.action: Tuple[Tuple[int, int], Tuple[int, int]] = None
+        self.action: Tuple[Tuple[int, int], Tuple[int, int]] = None # type: ignore
+        self.opp_action: Tuple[Tuple[int, int], Tuple[int, int]] = None # type: ignore
 
     def getAction(self, state: game.State) -> None:
         """
