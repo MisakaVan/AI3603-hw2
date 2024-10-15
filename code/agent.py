@@ -32,14 +32,14 @@ class RandomAgent(Agent):
     """
     Agent that selects actions randomly.
     """
-    def getAction(self, state):
+    def getAction(self, state: game.State):
         """
         Selects a random legal action.
         """
         legal_actions = self.game.actions(state)
         self.action = random.choice(legal_actions)
 
-    def oppAction(self, state):
+    def oppAction(self, state: game.State):
         """
         Selects a random legal action for the opponent.
         """
@@ -52,7 +52,7 @@ class SimpleGreedyAgent(Agent):
     """
     Greedy agent that selects actions based on maximum vertical advance.
     """
-    def getAction(self, state):
+    def getAction(self, state: game.State):
         """
         Selects an action with the maximum vertical advance.
         """
@@ -68,7 +68,7 @@ class SimpleGreedyAgent(Agent):
             max_actions = [action for action in legal_actions if action[1][0] - action[0][0] == max_vertical_advance_one_step]
         self.action = random.choice(max_actions)
 
-    def oppAction(self, state):
+    def oppAction(self, state: game.State):
         """
         Selects an action with the minimum vertical advance for the opponent.
         """
@@ -90,7 +90,7 @@ class YourAgent(Agent):
     """
     Placeholder for user-defined agent.
     """
-    def getAction(self, state):
+    def getAction(self, state: game.State):
         """
         Placeholder for user-defined action selection.
         """
@@ -99,7 +99,7 @@ class YourAgent(Agent):
         # write your own implementation here
         ##########################################
 
-    def oppAction(self, state):
+    def oppAction(self, state: game.State):
         """
         Placeholder for user-defined opponent action selection.
         """
