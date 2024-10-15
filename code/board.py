@@ -80,7 +80,7 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if (row, col - 1) in self.board_status.keys:
+        if (row, col - 1) in self.board_status.keys():
             return (row, col - 1)
 
     def rightPosition(self, pos):
