@@ -313,7 +313,7 @@ class Board(object):
                     elif self.board_status[(row, col)] == 1:
                         continue
                     elif iter > self.max_iter:
-                        return self.compare_piece_num()
+                        return self.compare_piece_num() == 1
                     else:
                         return False
             return True
@@ -326,7 +326,7 @@ class Board(object):
                     elif self.board_status[(row, col)] == 2:
                         continue
                     elif iter > self.max_iter:
-                        return not self.compare_piece_num()
+                        return self.compare_piece_num() == -1
                     else:
                         return False
             return True
