@@ -1,35 +1,3 @@
-"""
-This module contains functions to run and simulate games of Chinese Checkers using different agents.
-
-Functions:
-    runGame(ccgame, agents):
-        Runs a single game of Chinese Checkers.
-        Args:
-            ccgame (ChineseChecker): The game instance.
-            agents (dict): A dictionary mapping player numbers to their respective agents.
-        Returns:
-            int: The winner of the game (1 for player 1, 2 for player 2, 0 for a tie).
-
-    simulateMultipleGames(agents_dict, simulation_times, ccgame):
-        Simulates multiple games of Chinese Checkers and tracks the results.
-        Args:
-            agents_dict (dict): A dictionary mapping player numbers to their respective agents.
-            simulation_times (int): The number of games to simulate.
-            ccgame (ChineseChecker): The game instance.
-        Returns:
-            None
-
-    callback(ccgame):
-        Callback function to start the game simulation when the button is pressed.
-        Args:
-            ccgame (ChineseChecker): The game instance.
-        Returns:
-            None
-
-Usage:
-    The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
-"""
-
 from agent import *
 from game import ChineseChecker
 import datetime
@@ -39,6 +7,16 @@ import time
 
 
 def runGame(ccgame, agents: dict):
+    """
+    Runs a single game of Chinese Checkers.
+    
+    Args:
+        ccgame (ChineseChecker): The game instance.
+        agents (dict): A dictionary mapping player numbers to their respective agents.
+        
+    Returns:
+        int: The winner of the game (1 for player 1, 2 for player 2, 0 for a tie).
+    """
     state = ccgame.startState()
     print(state)
     max_iter = 200  # deal with some stuck situations
@@ -83,6 +61,17 @@ def runGame(ccgame, agents: dict):
 
 
 def simulateMultipleGames(agents_dict, simulation_times, ccgame):
+    """
+    Simulates multiple games of Chinese Checkers and tracks the results.
+    
+    Args:
+        agents_dict (dict): A dictionary mapping player numbers to their respective agents.
+        simulation_times (int): The number of games to simulate.
+        ccgame (ChineseChecker): The game instance.
+        
+    Returns:
+        None
+    """
     win_times_P1 = 0
     win_times_P2 = 0
     tie_times = 0
@@ -104,6 +93,15 @@ def simulateMultipleGames(agents_dict, simulation_times, ccgame):
 
 
 def callback(ccgame):
+    """
+    Callback function to start the game simulation when the button is pressed.
+    
+    Args:
+        ccgame (ChineseChecker): The game instance.
+        
+    Returns:
+        None
+    """
     B.destroy()
     simpleGreedyAgent = SimpleGreedyAgent(ccgame)
     simpleGreedyAgent1 = SimpleGreedyAgent(ccgame)
@@ -118,6 +116,9 @@ def callback(ccgame):
 
 
 if __name__ == '__main__':
+    """
+    The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
+    """
     ccgame = ChineseChecker(10, 4)
     root = tk.Tk()
     board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)

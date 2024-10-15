@@ -1,75 +1,17 @@
 class Board(object):
     """
     Board class represents a game board for a two-player game.
-
-    Attributes:
-        size (int): The size of the board.
-        piece_rows (int): The number of rows occupied by pieces at the start.
-        max_iter (int): The maximum number of iterations allowed.
-        player1_pos (dict): The initial positions of player 1's pieces.
-        player2_pos (dict): The initial positions of player 2's pieces.
-        board_status (dict): The status of each position on the board.
-
-    Methods:
-        __init__(size, piece_rows, max_iter=200):
-            Initializes the board with the given size, piece rows, and maximum iterations.
-
-        getColNum(row):
-            Returns the number of columns in the given row.
-
-        isEmptyPosition(pos):
-            Checks if the given position is empty.
-
-        leftPosition(pos):
-            Returns the position to the left of the given position.
-
-        rightPosition(pos):
-            Returns the position to the right of the given position.
-
-        upLeftPosition(pos):
-            Returns the position to the upper left of the given position.
-
-        upRightPosition(pos):
-            Returns the position to the upper right of the given position.
-
-        downLeftPosition(pos):
-            Returns the position to the lower left of the given position.
-
-        downRightPosition(pos):
-            Returns the position to the lower right of the given position.
-
-        adjacentPositions(pos):
-            Returns a list of positions adjacent to the given position.
-
-        getPlayerPiecePositions(player):
-            Returns a list of positions occupied by the given player's pieces.
-
-        getOneDirectionHopPosition(pos, dir_func):
-            Returns the possible target hop position in the direction designated by dir_func.
-
-        getOneHopPositions(pos):
-            Returns a list of positions that can be reached from the given position in one hop.
-
-        getAllHopPositions(pos):
-            Returns all positions that can be reached from the given position in several hops.
-
-        compare_piece_num():
-            Compares the number of pieces for both players and returns the player with more pieces.
-
-        ifPlayerWin(player, iter):
-            Checks if the given player has won the game.
-
-        isEnd(iter):
-            Checks if the game has ended and returns the result.
-
-        printBoard():
-            Prints the current state of the board.
-
-        printBoardOriginal():
-            Prints the original state of the board.
     """
 
     def __init__(self, size, piece_rows, max_iter=200):
+        """
+        Initializes the board with the given size, piece rows, and maximum iterations.
+
+        Args:
+            size (int): The size of the board.
+            piece_rows (int): The number of rows occupied by pieces at the start.
+            max_iter (int): The maximum number of iterations allowed.
+        """
         assert piece_rows < size
 
         self.player1_pos = {'(2, 1)': False, '(2, 2)': False}
@@ -100,27 +42,72 @@ class Board(object):
         self.board_status[(size * 2 - piece_rows + 2, 2)] = 3
 
     def getColNum(self, row):
+        """
+        Returns the number of columns in the given row.
+
+        Args:
+            row (int): The row number.
+
+        Returns:
+            int: The number of columns in the given row.
+        """
         if row in range(1, self.size + 1):
             return row
         else:
             return self.size * 2 - row
 
     def isEmptyPosition(self, pos):
+        """
+        Checks if the given position is empty.
+
+        Args:
+            pos (tuple): The position to check.
+
+        Returns:
+            bool: True if the position is empty, False otherwise.
+        """
         return self.board_status[pos] == 0
 
     def leftPosition(self, pos):
+        """
+        Returns the position to the left of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the left.
+        """
         row = pos[0]
         col = pos[1]
         if (row, col - 1) in list(self.board_status.keys()):
             return (row, col - 1)
 
     def rightPosition(self, pos):
+        """
+        Returns the position to the right of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the right.
+        """
         row = pos[0]
         col = pos[1]
         if (row, col + 1) in list(self.board_status.keys()):
             return (row, col + 1)
 
     def upLeftPosition(self, pos):
+        """
+        Returns the position to the upper left of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the upper left.
+        """
         row = pos[0]
         col = pos[1]
         if row <= self.size and (row - 1, col - 1) in list(self.board_status.keys()):
@@ -129,6 +116,15 @@ class Board(object):
             return (row - 1, col)
 
     def upRightPosition(self, pos):
+        """
+        Returns the position to the upper right of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the upper right.
+        """
         row = pos[0]
         col = pos[1]
         if row <= self.size and (row - 1, col) in list(self.board_status.keys()):
@@ -137,6 +133,15 @@ class Board(object):
             return (row - 1, col + 1)
 
     def downLeftPosition(self, pos):
+        """
+        Returns the position to the lower left of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the lower left.
+        """
         row = pos[0]
         col = pos[1]
         if row < self.size and (row + 1, col) in list(self.board_status.keys()):
@@ -145,6 +150,15 @@ class Board(object):
             return (row + 1, col - 1)
 
     def downRightPosition(self, pos):
+        """
+        Returns the position to the lower right of the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            tuple: The position to the lower right.
+        """
         row = pos[0]
         col = pos[1]
         if row < self.size and (row + 1, col + 1) in list(self.board_status.keys()):
@@ -153,6 +167,15 @@ class Board(object):
             return (row + 1, col)
 
     def adjacentPositions(self, pos):
+        """
+        Returns a list of positions adjacent to the given position.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            list: A list of adjacent positions.
+        """
         result = []
         result.append(self.leftPosition(pos))
         result.append(self.rightPosition(pos))
@@ -163,7 +186,15 @@ class Board(object):
         return [x for x in result if x is not None]
 
     def getPlayerPiecePositions(self, player):
-        # return a list of positions that player's pieces occupy
+        """
+        Returns a list of positions occupied by the given player's pieces.
+
+        Args:
+            player (int): The player number (1 or 2).
+
+        Returns:
+            list: A list of positions occupied by the player's pieces.
+        """
         result1 = [
             (row, col)
             for row in range(1, self.size + 1)
@@ -179,9 +210,16 @@ class Board(object):
         return result1 + result2
 
     def getOneDirectionHopPosition(self, pos, dir_func):
-        # return possible target hop position in the direction designated by dir_func
-        # our rule: can hop as long as there's only one piece on the line between current position and target position
-        # and the piece hopped over is at the middle point
+        """
+        Returns the possible target hop position in the direction designated by dir_func.
+
+        Args:
+            pos (tuple): The current position.
+            dir_func (function): The direction function.
+
+        Returns:
+            tuple: The target hop position.
+        """
         hop_over_pos = dir_func(pos)
         count = 0
         while hop_over_pos is not None:
@@ -200,6 +238,15 @@ class Board(object):
                 return target_position
 
     def getOneHopPositions(self, pos):
+        """
+        Returns a list of positions that can be reached from the given position in one hop.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            list: A list of positions that can be reached in one hop.
+        """
         result = []
         result.append(self.getOneDirectionHopPosition(pos, self.leftPosition))
         result.append(self.getOneDirectionHopPosition(pos, self.rightPosition))
@@ -210,7 +257,15 @@ class Board(object):
         return [x for x in result if x is not None]
 
     def getAllHopPositions(self, pos):
-        # return all positions can be reached from current position in several hops
+        """
+        Returns all positions that can be reached from the given position in several hops.
+
+        Args:
+            pos (tuple): The current position.
+
+        Returns:
+            list: A list of positions that can be reached in several hops.
+        """
         result = self.getOneHopPositions(pos)
         start_index = 0
         while start_index < len(result):
@@ -225,7 +280,12 @@ class Board(object):
         return result
 
     def compare_piece_num(self):
+        """
+        Compares the number of pieces for both players and returns the player with more pieces.
 
+        Returns:
+            int: The player number with more pieces (1 or 2).
+        """
         player1_score = 0
         player2_score = 0
 
@@ -245,6 +305,16 @@ class Board(object):
             return 0
 
     def ifPlayerWin(self, player, iter):
+        """
+        Checks if the given player has won the game.
+
+        Args:
+            player (int): The player number (1 or 2).
+            iter (int): The current iteration number.
+
+        Returns:
+            bool: True if the player has won, False otherwise.
+        """
         if player == 1:
             for row in range(1, self.piece_rows + 1):
                 for col in range(1, self.getColNum(row) + 1):
@@ -272,6 +342,15 @@ class Board(object):
             return True
 
     def isEnd(self, iter):
+        """
+        Checks if the game has ended and returns the result.
+
+        Args:
+            iter (int): The current iteration number.
+
+        Returns:
+            tuple: A tuple containing a boolean indicating if the game has ended and the winning player number.
+        """
         player_1_reached = self.ifPlayerWin(1, iter)
         player_2_reached = self.ifPlayerWin(2, iter)
         print(f'iterations: {iter}')
@@ -282,6 +361,9 @@ class Board(object):
         return (False, None)
 
     def printBoard(self):
+        """
+        Prints the current state of the board.
+        """
         for row in range(1, self.size + 1):
             print(' ' * (self.size - row), end=' ')
             for col in range(1, self.getColNum(row) + 1):
@@ -297,6 +379,9 @@ class Board(object):
             print('\n', end=' ')
 
     def printBoardOriginal(self):
+        """
+        Prints the original state of the board.
+        """
         for row in range(1, self.size + 1):
             for col in range(1, self.getColNum(row) + 1):
                 print(str(self.board_status[(row, col)]), end=' ')

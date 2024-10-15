@@ -1,37 +1,3 @@
-"""
-ChineseChecker is a class that represents the game logic for Chinese Checkers.
-
-Attributes:
-    size (int): The size of the board.
-    piece_rows (int): The number of rows occupied by pieces at the start.
-    board (Board): The game board.
-
-Methods:
-    __init__(self, size, piece_rows):
-        Initializes the ChineseChecker with a board of given size and piece rows.
-
-    startState(self):
-        Resets the board and returns the initial state.
-
-    isEnd(self, state, iter):
-        Checks if the game has ended given the current state and iteration.
-
-    actions(self, state):
-        Returns a list of possible actions for the current player in the given state.
-
-    opp_actions(self, state):
-        Returns a list of possible actions for the opponent in the given state.
-
-    player(self, state):
-        Returns the current player from the state.
-
-    succ(self, state, action):
-        Returns the successor state after applying the given action for the current player.
-
-    opp_succ(self, state, action, last_action):
-        Returns the successor state after applying the given action for the opponent.
-"""
-
 import time
 from board import Board
 import copy
@@ -40,18 +6,50 @@ import copy
 class ChineseChecker(object):
 
     def __init__(self, size, piece_rows):
+        """
+        Initializes the ChineseChecker with a board of given size and piece rows.
+
+        Args:
+            size (int): The size of the board.
+            piece_rows (int): The number of rows occupied by pieces at the start.
+        """
         self.size = size
         self.piece_rows = piece_rows
         self.board = Board(self.size, self.piece_rows)
 
     def startState(self):
+        """
+        Resets the board and returns the initial state.
+
+        Returns:
+            tuple: The initial state of the game.
+        """
         self.board = Board(self.size, self.piece_rows)
         return (1, self.board)
 
     def isEnd(self, state, iter):
+        """
+        Checks if the game has ended given the current state and iteration.
+
+        Args:
+            state (tuple): The current state of the game.
+            iter (int): The current iteration.
+
+        Returns:
+            bool: True if the game has ended, False otherwise.
+        """
         return state[1].isEnd(iter)[0]
 
     def actions(self, state):
+        """
+        Returns a list of possible actions for the current player in the given state.
+
+        Args:
+            state (tuple): The current state of the game.
+
+        Returns:
+            list: A list of possible actions.
+        """
         action_list = []
         player = state[0]
         board = state[1]
@@ -71,6 +69,15 @@ class ChineseChecker(object):
         return action_list
 
     def opp_actions(self, state):
+        """
+        Returns a list of possible actions for the opponent in the given state.
+
+        Args:
+            state (tuple): The current state of the game.
+
+        Returns:
+            list: A list of possible actions for the opponent.
+        """
         action_list = []
         player = state[0]
         board = state[1]
@@ -90,10 +97,28 @@ class ChineseChecker(object):
         return action_list
 
     def player(self, state):
+        """
+        Returns the current player from the state.
+
+        Args:
+            state (tuple): The current state of the game.
+
+        Returns:
+            int: The current player.
+        """
         return state[0]
 
     def succ(self, state, action):
+        """
+        Returns the successor state after applying the given action for the current player.
 
+        Args:
+            state (tuple): The current state of the game.
+            action (tuple): The action to apply.
+
+        Returns:
+            tuple: The successor state.
+        """
         move_opp = False
         player = state[0]
         board = copy.deepcopy(state[1])
@@ -112,7 +137,17 @@ class ChineseChecker(object):
         return (3 - player, board, move_opp)
 
     def opp_succ(self, state, action, last_action):
+        """
+        Returns the successor state after applying the given action for the opponent.
 
+        Args:
+            state (tuple): The current state of the game.
+            action (tuple): The action to apply.
+            last_action (tuple): The last action taken.
+
+        Returns:
+            tuple: The successor state.
+        """
         move_opp = False
         player = state[0]
         print(action)
@@ -125,6 +160,3 @@ class ChineseChecker(object):
             self.board.player2_pos[str(last_action[1])] = True
 
         return (player, board, move_opp)
-
-
-# okay decompiling game.pyc
