@@ -1,6 +1,6 @@
 from agent import *
 from game import ChineseChecker
-import datetime
+# import datetime
 import tkinter as tk
 from UI import GameBoard
 import time
@@ -23,7 +23,7 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     print(state)
     max_iter = 200  # deal with some stuck situations
     iter = 0
-    start = datetime.datetime.now()
+    # start = datetime.datetime.now()
     while (not ccgame.isEnd(state, iter)) and iter < max_iter:
         iter += 1
         display_board.board = state[1]
@@ -54,7 +54,7 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     display_board.update()
     time.sleep(0.1)
 
-    end = datetime.datetime.now()
+    # end = datetime.datetime.now()
     # if ccgame.isEnd(state, iter):
     #     return state[1].isEnd(iter)[1]  # return winner
     is_end, winner = ccgame.board.isEnd(iter)
@@ -82,7 +82,7 @@ def simulateMultipleGames(
     win_times_P1 = 0
     win_times_P2 = 0
     tie_times = 0
-    utility_sum = 0
+    # utility_sum = 0
     for i in range(simulation_times):
         run_result = runGame(ccgame, agents_dict)
         print(run_result)
@@ -112,8 +112,8 @@ def callback(ccgame: ChineseChecker) -> None:
     B.destroy()
     simpleGreedyAgent = SimpleGreedyAgent(ccgame)
     simpleGreedyAgent1 = SimpleGreedyAgent(ccgame)
-    randomAgent = RandomAgent(ccgame)
-    teamAgent = YourAgent(ccgame)
+    # randomAgent = RandomAgent(ccgame)
+    # teamAgent = YourAgent(ccgame)
 
     # Player 1 first move, Player 2 second move
     # YourAgent need to test as both player 1 and player 2
