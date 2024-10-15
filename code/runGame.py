@@ -62,7 +62,13 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
         return winner  # type: ignore
     else:  # stuck situation
         print("stuck!")
-        return 0
+        chess_count_res = state[1].compare_piece_num()
+        if chess_count_res == 1:
+            return 1
+        elif chess_count_res == -1:
+            return 2
+        else:
+            return 0
 
 
 def simulateMultipleGames(
