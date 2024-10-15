@@ -51,7 +51,7 @@ class Board(object):
         Returns:
             int: The number of columns in the given row.
         """
-        if row in range(1, self.size + 1):
+        if 1 <= row <= self.size:
             return row
         else:
             return self.size * 2 - row
