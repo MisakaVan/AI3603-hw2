@@ -5,7 +5,7 @@ class Board(object):
     Board class represents a game board for a two-player game.
     """
 
-    def __init__(self, size, piece_rows, max_iter=200):
+    def __init__(self, size: int, piece_rows: int, max_iter: int = 200):
         """
         Initializes the board with the given size, piece rows, and maximum iterations.
 
@@ -178,7 +178,7 @@ class Board(object):
         Returns:
             list: A list of adjacent positions.
         """
-        result = []
+        result: List[Optional[Tuple[int, int]]] = []
         result.append(self.leftPosition(pos))
         result.append(self.rightPosition(pos))
         result.append(self.upLeftPosition(pos))
@@ -239,7 +239,7 @@ class Board(object):
         Returns:
             list: A list of positions that can be reached in one hop.
         """
-        result = []
+        result: List[Optional[Tuple[int, int]]] = []
         result.append(self.getOneDirectionHopPosition(pos, self.leftPosition))
         result.append(self.getOneDirectionHopPosition(pos, self.rightPosition))
         result.append(self.getOneDirectionHopPosition(pos, self.upLeftPosition))
