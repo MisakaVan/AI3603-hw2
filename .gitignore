@@ -1,3 +1,10 @@
 .DS_Store
 .vscode/
 __pycache__/
+
+*.pdf
+*.md
+
+*.log
+
+test.py
