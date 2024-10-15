@@ -195,19 +195,9 @@ class Board(object):
         Returns:
             list: A list of positions occupied by the player's pieces.
         """
-        result1 = [
-            (row, col)
-            for row in range(1, self.size + 1)
-            for col in range(1, self.getColNum(row) + 1)
-            if self.board_status[(row, col)] == player or self.board_status[(row, col)] == player + 2
+        return [
+            pos for pos, piece in self.board_status.items() if piece == player or piece == player + 2
         ]
-        result2 = [
-            (row, col)
-            for row in range(self.size + 1, self.size * 2)
-            for col in range(1, self.getColNum(row) + 1)
-            if self.board_status[(row, col)] == player or self.board_status[(row, col)] == player + 2
-        ]
-        return result1 + result2
 
     def getOneDirectionHopPosition(self, pos, dir_func):
         """
