@@ -26,10 +26,10 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     start = datetime.datetime.now()
     while (not ccgame.isEnd(state, iter)) and iter < max_iter:
         iter += 1
-        board.board = state[1]
-        board.draw()
-        board.update_idletasks()
-        board.update()
+        display_board.board = state[1]
+        display_board.draw()
+        display_board.update_idletasks()
+        display_board.update()
 
         player = ccgame.player(state)
         agent: Agent = agents[player]
@@ -48,10 +48,10 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
                 agent.opp_action = random.choice(legal_actions)
             state = ccgame.opp_succ(state, agent.opp_action, agent.action[1])
 
-    board.board = state[1]
-    board.draw()
-    board.update_idletasks()
-    board.update()
+    display_board.board = state[1]
+    display_board.draw()
+    display_board.update_idletasks()
+    display_board.update()
     time.sleep(0.1)
 
     end = datetime.datetime.now()
@@ -125,8 +125,8 @@ if __name__ == "__main__":
     """
     ccgame = ChineseChecker(10, 4)
     root = tk.Tk()
-    board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)
-    board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    B = tk.Button(board, text="Start", command=lambda: callback(ccgame=ccgame))
+    display_board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)
+    display_board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+    B = tk.Button(display_board, text="Start", command=lambda: callback(ccgame=ccgame))
     B.pack()
     root.mainloop()
