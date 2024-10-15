@@ -5,7 +5,7 @@ import tkinter as tk
 from UI import GameBoard
 import time
 
-from typing import List, Optional, Tuple, Dict, Callable
+from typing import Dict
 
 
 def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
