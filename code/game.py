@@ -1,15 +1,14 @@
-import time
 from board import Board
 import copy
 
-from typing import List, Tuple, Dict
+from typing import List, Tuple
 
 State = Tuple[int, Board] | Tuple[int, Board, bool]
 
 
 class ChineseChecker(object):
 
-    def __init__(self, size, piece_rows):
+    def __init__(self, size: int, piece_rows: int):
         """
         Initializes the ChineseChecker with a board of given size and piece rows.
 
@@ -31,7 +30,7 @@ class ChineseChecker(object):
         self.board = Board(self.size, self.piece_rows)
         return (1, self.board)
 
-    def isEnd(self, state, iter):
+    def isEnd(self, state: State, iter: int):
         """
         Checks if the game has ended given the current state and iteration.
 
@@ -54,7 +53,7 @@ class ChineseChecker(object):
         Returns:
             list: A list of possible actions.
         """
-        action_list = []
+        action_list: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
         player = state[0]
         board = state[1]
         player_piece_pos_list = board.getPlayerPiecePositions(player)
@@ -82,7 +81,7 @@ class ChineseChecker(object):
         Returns:
             list: A list of possible actions for the opponent.
         """
-        action_list = []
+        action_list: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
         player = state[0]
         board = state[1]
         player_piece_pos_list = board.getPlayerPiecePositions(player)
