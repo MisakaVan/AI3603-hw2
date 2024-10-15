@@ -383,3 +383,58 @@ class Board(object):
                 print(str(self.board_status[(row, col)]), end=' ')
 
             print('\n', end=' ')
+
+
+def test_winning():
+
+    def clear_board(board: Board):
+        for pos, _ in test_board.board_status.items():
+            test_board.board_status[pos] = 0
+
+    test_board = Board(size=10, piece_rows=4, max_iter=200)
+    
+
+    # 1. 先手方在区域内棋子数量3，多于后手方的2，先手方在超时后胜利，测试通过
+    clear_board(test_board)
+    test_board.board_status[(1, 1)] = 1
+    test_board.board_status[(2, 1)] = 1
+    test_board.board_status[(3, 1)] = 1
+    test_board.board_status[(19, 1)] = 2
+    test_board.board_status[(18, 1)] = 2
+
+    print("3 vs 2")
+    print(f"{test_board.ifPlayerWin(1, 200) = }") # expected: False, got: False
+    print(f"{test_board.ifPlayerWin(2, 200) = }") # expected: False, got: False
+    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: True, got: 1
+    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: False, got: False
+
+
+    # 2. 先手方在区域内棋子数量2，等于后手方的2，超时后应该是平局，但ifPlayerWin(2, 201)返回True
+    for pos, _ in test_board.board_status.items():
+        test_board.board_status[pos] = 0
+    
+    test_board.board_status[(1, 1)] = 1
+    test_board.board_status[(2, 1)] = 1
+    test_board.board_status[(19, 1)] = 2
+    test_board.board_status[(18, 1)] = 2
+
+
+    print("2 vs 2")
+    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: False, got 0
+    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: False, got True 
+
+    # 3. 先手方在区域内棋子数量2，少于后手方的3，后手方在超时后胜利，测试通过
+    clear_board(test_board)
+    test_board.board_status[(1, 1)] = 1
+    test_board.board_status[(2, 1)] = 1
+    test_board.board_status[(19, 1)] = 2
+    test_board.board_status[(18, 1)] = 2
+    test_board.board_status[(17, 1)] = 2
+
+    print("2 vs 3")
+    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: False, got: 0
+    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: True, got: True
+
+
+if __name__ == '__main__':
+    test_winning()
