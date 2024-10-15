@@ -293,9 +293,8 @@ class Board(object):
 
         if player1_score > player2_score:
             return 1
-        elif player1_score < player2_score:
-            return -1
-        return 0
+        else:
+            return 0
 
     def ifPlayerWin(self, player: int, iter: int):
         """
@@ -316,7 +315,7 @@ class Board(object):
                     elif self.board_status[(row, col)] == 1:
                         continue
                     elif iter > self.max_iter:
-                        return self.compare_piece_num() == 1
+                        return self.compare_piece_num()
                     else:
                         return False
             return True
@@ -329,7 +328,7 @@ class Board(object):
                     elif self.board_status[(row, col)] == 2:
                         continue
                     elif iter > self.max_iter:
-                        return self.compare_piece_num() == -1
+                        return not self.compare_piece_num()
                     else:
                         return False
             return True
