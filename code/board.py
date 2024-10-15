@@ -80,7 +80,7 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if (row, col - 1) in list(self.board_status.keys()):
+        if (row, col - 1) in self.board_status.keys:
             return (row, col - 1)
 
     def rightPosition(self, pos):
@@ -95,7 +95,7 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if (row, col + 1) in list(self.board_status.keys()):
+        if (row, col + 1) in self.board_status.keys():
             return (row, col + 1)
 
     def upLeftPosition(self, pos):
@@ -110,9 +110,9 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if row <= self.size and (row - 1, col - 1) in list(self.board_status.keys()):
+        if row <= self.size and (row - 1, col - 1) in self.board_status.keys():
             return (row - 1, col - 1)
-        if row > self.size and (row - 1, col) in list(self.board_status.keys()):
+        if row > self.size and (row - 1, col) in self.board_status.keys():
             return (row - 1, col)
 
     def upRightPosition(self, pos):
@@ -127,9 +127,9 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if row <= self.size and (row - 1, col) in list(self.board_status.keys()):
+        if row <= self.size and (row - 1, col) in self.board_status.keys():
             return (row - 1, col)
-        if row > self.size and (row - 1, col + 1) in list(self.board_status.keys()):
+        if row > self.size and (row - 1, col + 1) in self.board_status.keys():
             return (row - 1, col + 1)
 
     def downLeftPosition(self, pos):
@@ -144,9 +144,9 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if row < self.size and (row + 1, col) in list(self.board_status.keys()):
+        if row < self.size and (row + 1, col) in self.board_status.keys():
             return (row + 1, col)
-        if row >= self.size and (row + 1, col - 1) in list(self.board_status.keys()):
+        if row >= self.size and (row + 1, col - 1) in self.board_status.keys():
             return (row + 1, col - 1)
 
     def downRightPosition(self, pos):
@@ -161,9 +161,9 @@ class Board(object):
         """
         row = pos[0]
         col = pos[1]
-        if row < self.size and (row + 1, col + 1) in list(self.board_status.keys()):
+        if row < self.size and (row + 1, col + 1) in self.board_status.keys():
             return (row + 1, col + 1)
-        if row >= self.size and (row + 1, col) in list(self.board_status.keys()):
+        if row >= self.size and (row + 1, col) in self.board_status.keys():
             return (row + 1, col)
 
     def adjacentPositions(self, pos):
