@@ -5,15 +5,17 @@ import tkinter as tk
 from UI import GameBoard
 import time
 
+from typing import List, Optional, Tuple, Dict, Callable
 
-def runGame(ccgame, agents: dict):
+
+def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     """
     Runs a single game of Chinese Checkers.
-    
+
     Args:
         ccgame (ChineseChecker): The game instance.
         agents (dict): A dictionary mapping player numbers to their respective agents.
-        
+
     Returns:
         int: The winner of the game (1 for player 1, 2 for player 2, 0 for a tie).
     """
@@ -56,19 +58,21 @@ def runGame(ccgame, agents: dict):
     if ccgame.isEnd(state, iter):
         return state[1].isEnd(iter)[1]  # return winner
     else:  # stuck situation
-        print('stuck!')
+        print("stuck!")
         return 0
 
 
-def simulateMultipleGames(agents_dict, simulation_times, ccgame):
+def simulateMultipleGames(
+    agents_dict: Dict[int, Agent], simulation_times: int, ccgame: ChineseChecker
+) -> None:
     """
     Simulates multiple games of Chinese Checkers and tracks the results.
-    
+
     Args:
         agents_dict (dict): A dictionary mapping player numbers to their respective agents.
         simulation_times (int): The number of games to simulate.
         ccgame (ChineseChecker): The game instance.
-        
+
     Returns:
         None
     """
@@ -85,20 +89,20 @@ def simulateMultipleGames(agents_dict, simulation_times, ccgame):
             win_times_P2 += 1
         elif run_result == 0:
             tie_times += 1
-        print('game', i + 1, 'finished', 'winner is player ', run_result)
-    print('In', simulation_times, 'simulations:')
-    print('winning times: for player 1 is ', win_times_P1)
-    print('winning times: for player 2 is ', win_times_P2)
-    print('Tie times:', tie_times)
+        print("game", i + 1, "finished", "winner is player ", run_result)
+    print("In", simulation_times, "simulations:")
+    print("winning times: for player 1 is ", win_times_P1)
+    print("winning times: for player 2 is ", win_times_P2)
+    print("Tie times:", tie_times)
 
 
-def callback(ccgame):
+def callback(ccgame: ChineseChecker) -> None:
     """
     Callback function to start the game simulation when the button is pressed.
-    
+
     Args:
         ccgame (ChineseChecker): The game instance.
-        
+
     Returns:
         None
     """
@@ -110,12 +114,12 @@ def callback(ccgame):
 
     # Player 1 first move, Player 2 second move
     # YourAgent need to test as both player 1 and player 2
-    simulateMultipleGames({1: simpleGreedyAgent1, 2:simpleGreedyAgent}, 1, ccgame)
+    simulateMultipleGames({1: simpleGreedyAgent1, 2: simpleGreedyAgent}, 1, ccgame)
     # simulateMultipleGames({1: simpleGreedyAgent, 2: teamAgent}, 1, ccgame)
     # simulateMultipleGames({1: teamAgent, 2: simpleGreedyAgent}, 1, ccgame)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
