@@ -15,13 +15,13 @@ class Agent(object):
         self.game = game
         self.action: Tuple[Tuple[int, int], Tuple[int, int]] = None
 
-    def getAction(self, state: Tuple[int, board.Board]) -> None:
+    def getAction(self, state: game.State) -> None:
         """
         Abstract method to get the action for the current state.
         """
         raise Exception("Not implemented yet")
 
-    def oppAction(self, state: Tuple[int, board.Board]) -> None:
+    def oppAction(self, state: game.State) -> None:
         """
         Abstract method to get the opponent's action for the current state.
         """
