@@ -2,6 +2,8 @@ import time
 from board import Board
 import copy
 
+from typing import List, Tuple, Dict
+
 
 class ChineseChecker(object):
 
@@ -17,7 +19,7 @@ class ChineseChecker(object):
         self.piece_rows = piece_rows
         self.board = Board(self.size, self.piece_rows)
 
-    def startState(self):
+    def startState(self) -> Tuple[int, Board]:
         """
         Resets the board and returns the initial state.
 
@@ -40,7 +42,7 @@ class ChineseChecker(object):
         """
         return state[1].isEnd(iter)[0]
 
-    def actions(self, state):
+    def actions(self, state: Tuple[int, Board]) -> List[Tuple[Tuple[int, int], Tuple[int, int]]]:
         """
         Returns a list of possible actions for the current player in the given state.
 
@@ -68,7 +70,7 @@ class ChineseChecker(object):
 
         return action_list
 
-    def opp_actions(self, state):
+    def opp_actions(self, state: Tuple[int, Board]) -> List[Tuple[Tuple[int, int], Tuple[int, int]]]:
         """
         Returns a list of possible actions for the opponent in the given state.
 
@@ -96,7 +98,7 @@ class ChineseChecker(object):
 
         return action_list
 
-    def player(self, state):
+    def player(self, state: Tuple[int, Board]) -> int:
         """
         Returns the current player from the state.
 
@@ -108,7 +110,7 @@ class ChineseChecker(object):
         """
         return state[0]
 
-    def succ(self, state, action):
+    def succ(self, state: Tuple[int, Board], action: Tuple[Tuple[int, int], Tuple[int, int]]) -> Tuple[int, Board, bool]:
         """
         Returns the successor state after applying the given action for the current player.
 
@@ -136,7 +138,12 @@ class ChineseChecker(object):
 
         return (3 - player, board, move_opp)
 
-    def opp_succ(self, state, action, last_action):
+    def opp_succ(
+            self,
+            state: Tuple[int, Board],
+            action: Tuple[Tuple[int, int], Tuple[int, int]],
+            last_action: Tuple[Tuple[int, int], Tuple[int, int]]
+        ) -> Tuple[int, Board, bool]:
         """
         Returns the successor state after applying the given action for the opponent.
 
