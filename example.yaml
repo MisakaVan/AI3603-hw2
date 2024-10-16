@@ -1,0 +1,10 @@
+# game settings
+board_size: 10
+piece_rows: 4
+
+# player settings
+player1: YourAgent
+player2: SimpleGreedyAgent
+
+# benchmark settings
+num_games: 5
