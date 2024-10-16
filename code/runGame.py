@@ -29,6 +29,7 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     # start = datetime.datetime.now()
     while (not ccgame.isEnd(state, iter)) and iter < max_iter:
         iter += 1
+        print(f"iter: {iter}")
         display_board.board = state[1]
         display_board.draw()
         display_board.update_idletasks()

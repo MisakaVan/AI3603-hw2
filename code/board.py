@@ -347,7 +347,7 @@ class Board(object):
         """
         player_1_reached = self.ifPlayerWin(1, iter)
         player_2_reached = self.ifPlayerWin(2, iter)
-        print(f'iterations: {iter}')
+        # print(f'iterations: {iter}')
         if player_1_reached:
             return (True, 1)
         if player_2_reached:
