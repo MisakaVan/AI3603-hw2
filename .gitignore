@@ -6,6 +6,7 @@ __pycache__/
 *.md
 
 *.log
+logs/
 
 test.py
 
