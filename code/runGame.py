@@ -57,20 +57,21 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         agent: Agent = agents[player]
         # function agent.getAction() modify class member action
         agent.getAction(state)
-        logger.info(f"Player {player} action: {agent.action[0]} -> {agent.action[1]}")
+        
         legal_actions = ccgame.actions(state)
         if agent.action not in legal_actions:
             agent.action = random.choice(legal_actions)
-            logger.warning(f"Invalid action, choosing random action: {agent.action[0]} -> {agent.action[1]}")
+            logger.warning(f"Invalid action, choosing random action.")
+        logger.info(f"Player {player} action: {agent.action[0]} -> {agent.action[1]}")
         state = ccgame.succ(state, agent.action)
         if state[-1]:
             logger.info(f"Player {player} has another opp action")
             agent.oppAction(state)
-            logger.info(f"Player {player} opp action: {agent.opp_action[0]} -> {agent.opp_action[1]}")
             legal_actions = ccgame.opp_actions(state)
             if agent.opp_action not in legal_actions:
                 agent.opp_action = random.choice(legal_actions)
-                logger.warning(f"Invalid opp action, choosing random action: {agent.opp_action[0]} -> {agent.opp_action[1]}")
+                logger.warning(f"Invalid opp action, choosing random action.")
+            logger.info(f"Player {player} opp action: {agent.opp_action[0]} -> {agent.opp_action[1]}")
             state = ccgame.opp_succ(state, agent.opp_action, agent.action)
         iter_end = time.time()
         iter_times.append(iter_end - iter_start)
