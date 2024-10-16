@@ -167,18 +167,30 @@ def parser():
         default="config.yaml",
         help="Path to the configuration file",
     )
+    _parser.add_argument(
+        "--num-games",
+        "-n",
+        type=int,
+        default=None,
+        help="Number of games to simulate. This overrides the same parameter in the config file.",
+    )
 
     return _parser
+
+def get_config():
+    args = parser().parse_args()
+    with open(args.config, "r") as config_file:
+        config = yaml.safe_load(config_file)
+    if args.num_games is not None:
+        config["num_games"] = args.num_games
+    return config
 
 
 if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
-    args = parser().parse_args()
-    with open(args.config, "r") as config_file:
-        config = yaml.safe_load(config_file)
-
+    config = get_config()
 
     ccgame = ChineseChecker(size=config.get("board_size", 10), piece_rows=config.get("piece_rows", 4))
     root = tk.Tk()
