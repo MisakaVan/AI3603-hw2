@@ -437,6 +437,18 @@ def test_winning():
     print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: False, got: 0
     print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: True, got: True
 
+    # 4. 模拟先手获胜
+    clear_board(test_board)
+    normal_dests = [(1, 1), (3, 1), (3, 2), (3, 3), (4, 1), (4, 2), (4, 3), (4, 4)]
+    special_dests = [(2, 1), (2, 2)]
+    for pos in normal_dests:
+        test_board.board_status[pos] = 1
+    for pos in special_dests:
+        test_board.board_status[pos] = 3
+    
+    print("simulate player 1 win")
+    print(f"{test_board.ifPlayerWin(1, 20) = }") # expected: True, got: True
+
 
 if __name__ == '__main__':
     test_winning()
