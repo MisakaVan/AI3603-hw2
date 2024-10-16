@@ -353,6 +353,28 @@ class Board(object):
         if player_2_reached:
             return (True, 2)
         return (False, None)
+    
+    def as_formatted_string(self) -> str:
+        """
+        Returns the board state as a formatted string.
+
+        Returns:
+            str: The formatted string representing the board state.
+        """
+        result = ''
+        for row in range(1, self.size + 1):
+            result += ' ' * (self.size - row)
+            for col in range(1, self.getColNum(row) + 1):
+                result += str(self.board_status[(row, col)]) + ' '
+            result += '\n'
+
+        for row in range(self.size + 1, self.size * 2):
+            result += ' ' * (row - self.size)
+            for col in range(1, self.getColNum(row) + 1):
+                result += str(self.board_status[(row, col)]) + ' '
+            result += '\n'
+
+        return "\n".join(map(lambda s: s.rstrip(), result.split('\n'))).rstrip("\n")
 
     def printBoard(self):
         """
@@ -450,6 +472,8 @@ def test_winning():
     
     print("simulate player 1 win")
     print(f"{test_board.ifPlayerWin(1, 20) = }") # expected: True, got: True
+    print(test_board.as_formatted_string())
+    print(1)
 
 
 if __name__ == '__main__':
