@@ -14,6 +14,9 @@ from typing import Callable, Dict, Any, List, Optional
 from agent import *
 from board import Board
 from game import ChineseChecker
+from board import Board
+# import datetime
+import tkinter as tk
 from UI import GameBoard
 
 logger = logging.getLogger(__name__)
@@ -205,6 +208,7 @@ def callback(
         # exit directly by destroying the root window
         if root is not None:
             root.destroy()
+
 
 
 def getAgentCls(agent_name: str) -> Callable[..., Agent]:
