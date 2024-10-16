@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import logging
 import json
 import time
 import tkinter as tk
@@ -14,6 +15,7 @@ from agent import *
 from board import Board
 from game import ChineseChecker
 from UI import GameBoard
+logger = logging.getLogger(__name__)
 
 
 
@@ -36,14 +38,15 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         int: The winner of the game (1 for player 1, 2 for player 2, 0 for a tie).
     """
     state = ccgame.startState()
-    print(state)
+    # print(state)
     max_iter = 200  # deal with some stuck situations
     iter = 0
     start = time.time()
     iter_times = []
     while (not ccgame.isEnd(state, iter)) and iter < max_iter:
         iter += 1
-        print(f"iter: {iter}")
+        logger.info(f"Iteration {iter}\n{state[1].as_formatted_string()}")
+
         display_board.board = state[1]
         display_board.draw()
         display_board.update_idletasks()
@@ -54,17 +57,20 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         agent: Agent = agents[player]
         # function agent.getAction() modify class member action
         agent.getAction(state)
+        logger.info(f"Player {player} action: {agent.action[0]} -> {agent.action[1]}")
         legal_actions = ccgame.actions(state)
         if agent.action not in legal_actions:
             agent.action = random.choice(legal_actions)
+            logger.warning(f"Invalid action, choosing random action: {agent.action[0]} -> {agent.action[1]}")
         state = ccgame.succ(state, agent.action)
         if state[-1]:
-            print("opp step")
-            print(agent.action)
+            logger.info(f"Player {player} has another opp action")
             agent.oppAction(state)
+            logger.info(f"Player {player} opp action: {agent.opp_action[0]} -> {agent.opp_action[1]}")
             legal_actions = ccgame.opp_actions(state)
             if agent.opp_action not in legal_actions:
                 agent.opp_action = random.choice(legal_actions)
+                logger.warning(f"Invalid opp action, choosing random action: {agent.opp_action[0]} -> {agent.opp_action[1]}")
             state = ccgame.opp_succ(state, agent.opp_action, agent.action)
         iter_end = time.time()
         iter_times.append(iter_end - iter_start)
@@ -90,11 +96,13 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         ret = ret._replace(winner=winner)
         # return winner  # type: ignore
     else:  # stuck situation
-        print("stuck!")
+        # print("stuck!")
         chess_count_res = state[1].compare_piece_num()
         winner = 1 if chess_count_res == 1 else 2 if chess_count_res == -1 else 0
         ret = ret._replace(winner=winner)
 
+    logger.info(f"Game over! Winner: {winner}")
+    logger.info(f"Total time used: {end - start}")
     return ret
 
 
@@ -119,8 +127,10 @@ def simulateMultipleGames(
     ret: List[Run_game_result] = []
 
     for i in range(simulation_times):
+        logger.info(f"=== Game {i} ===")
+
         run_result = runGame(ccgame, agents_dict)
-        print(run_result)
+        # print(run_result)
         ret.append(run_result)
 
     return ret
@@ -178,8 +188,11 @@ def callback(
                 indent=4,
             )
 
-    if root is not None:
-        root.destroy()
+    logger.info("====================")
+    logger.info(f"Overview: {overview}")
+    logger.info(f"Results have been saved to {log_dir}")
+
+
 
 
 def getAgentCls(agent_name: str) -> Callable[..., Agent]:
@@ -224,6 +237,8 @@ if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - [ %(levelname)s ] %(message)s")
+
     config = get_config()
 
     log_dir = pathlib.Path("logs")

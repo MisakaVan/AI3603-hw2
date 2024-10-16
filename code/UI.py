@@ -93,7 +93,7 @@ class GameBoard(tk.Frame):
         """Redraw the board"""
         xsize = 31
         ysize = 24
-        self.board.printBoard()
+        # self.board.printBoard()
         self.size = min(xsize, ysize)
         self.canvas.delete('square')
         color = self.color2
