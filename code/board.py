@@ -363,14 +363,14 @@ class Board(object):
             for col in range(1, self.getColNum(row) + 1):
                 print(str(self.board_status[(row, col)]), end=' ')
 
-            print('\n', end=' ')
+            print()
 
         for row in range(self.size + 1, self.size * 2):
             print(' ' * (row - self.size), end=' ')
             for col in range(1, self.getColNum(row) + 1):
                 print(str(self.board_status[(row, col)]), end=' ')
 
-            print('\n', end=' ')
+            print()
 
     def printBoardOriginal(self):
         """
