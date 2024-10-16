@@ -1,3 +1,6 @@
+import argparse
+import yaml
+
 from agent import *
 from game import ChineseChecker
 # import datetime
@@ -5,7 +8,7 @@ import tkinter as tk
 from UI import GameBoard
 import time
 
-from typing import Dict
+from typing import Callable, Dict, Any, Optional
 
 
 def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
@@ -105,7 +108,8 @@ def simulateMultipleGames(
     print("Tie times:", tie_times)
 
 
-def callback(ccgame: ChineseChecker) -> None:
+def callback(ccgame: ChineseChecker, config: Optional[Dict[str, Any]] = None
+             ) -> None:
     """
     Callback function to start the game simulation when the button is pressed.
 
@@ -116,26 +120,70 @@ def callback(ccgame: ChineseChecker) -> None:
         None
     """
     B.destroy()
-    simpleGreedyAgent = SimpleGreedyAgent(ccgame)
-    simpleGreedyAgent1 = SimpleGreedyAgent(ccgame)
+
+    if config is None:
+        config = {}
+    agent1_type = config.get("player1", "RandomAgent")
+    agent2_type = config.get("player2", "RandomAgent")
+    agent_dict = {
+        1: getAgentCls(agent1_type)(ccgame),
+        2: getAgentCls(agent2_type)(ccgame),
+    }
+
+    num_games: int = config.get("num_games", 1)  # type: ignore
+    with open("run.log", "w") as f:
+        f.write(f"Start running {num_games} games\n")
+        # type of agent
+        f.write(f"Player 1: {agent1_type}\n")
+        f.write(f"Player 2: {agent2_type}\n")
+
+    simulateMultipleGames(agent_dict, num_games, ccgame)
+    
+    # simpleGreedyAgent = SimpleGreedyAgent(ccgame)
+    # simpleGreedyAgent1 = SimpleGreedyAgent(ccgame)
     # randomAgent = RandomAgent(ccgame)
     # teamAgent = YourAgent(ccgame)
 
     # Player 1 first move, Player 2 second move
     # YourAgent need to test as both player 1 and player 2
-    simulateMultipleGames({1: simpleGreedyAgent1, 2: simpleGreedyAgent}, 1, ccgame)
+    # simulateMultipleGames({1: simpleGreedyAgent1, 2: simpleGreedyAgent}, 1, ccgame)
     # simulateMultipleGames({1: simpleGreedyAgent, 2: teamAgent}, 1, ccgame)
     # simulateMultipleGames({1: teamAgent, 2: simpleGreedyAgent}, 1, ccgame)
+
+def getAgentCls(agent_name: str) -> Callable[..., Agent]:
+    if agent_name == "RandomAgent":
+        return RandomAgent
+    if agent_name == "SimpleGreedyAgent":
+        return SimpleGreedyAgent
+    if agent_name == "YourAgent":
+        return YourAgent
+    raise Exception(f"Unknown agent name: {agent_name}")
+
+def parser():
+    _parser = argparse.ArgumentParser(description="Chinese Checkers")
+    _parser.add_argument(
+        "--config",
+        type=str,
+        default="config.yaml",
+        help="Path to the configuration file",
+    )
+
+    return _parser
 
 
 if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
-    ccgame = ChineseChecker(10, 4)
+    args = parser().parse_args()
+    with open(args.config, "r") as config_file:
+        config = yaml.safe_load(config_file)
+
+
+    ccgame = ChineseChecker(size=config.get("board_size", 10), piece_rows=config.get("piece_rows", 4))
     root = tk.Tk()
     display_board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)
     display_board.pack(side="top", fill="both", expand=True, padx=4, pady=4)
-    B = tk.Button(display_board, text="Start", command=lambda: callback(ccgame=ccgame))
+    B = tk.Button(display_board, text="Start", command=lambda: callback(ccgame=ccgame, config=config))
     B.pack()
     root.mainloop()
