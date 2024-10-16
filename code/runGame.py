@@ -15,8 +15,8 @@ from agent import *
 from board import Board
 from game import ChineseChecker
 from UI import GameBoard
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 
 Run_game_result = namedtuple(
@@ -150,10 +150,12 @@ def callback(
     Returns:
         None
     """
-    B.destroy()
-
     if config is None:
         config = {}
+
+    if not config.get("direct_start", False):
+        # not direct start, then the button should be destroyed
+        B.destroy()
 
     if log_dir is not None:
         with open(log_dir / "run_config.yaml", "w") as f:
@@ -192,7 +194,10 @@ def callback(
     logger.info(f"Overview: {overview}")
     logger.info(f"Results have been saved to {log_dir}")
 
-
+    if config.get("direct_exit", False):
+        # exit directly by destroying the root window
+        if root is not None:
+            root.destroy()
 
 
 def getAgentCls(agent_name: str) -> Callable[..., Agent]:
@@ -220,6 +225,18 @@ def parser():
         default=None,
         help="Number of games to simulate. This overrides the same parameter in the config file.",
     )
+    _parser.add_argument(
+        "--direct-start",
+        "--ds",
+        action="store_true",
+        help="Start the game directly without having to press the start button.",
+    )
+    _parser.add_argument(
+        "--direct-exit",
+        "--de",
+        action="store_true",
+        help="Exit the game directly without having to close the window or ctrl+c.",
+    )
 
     return _parser
 
@@ -227,9 +244,11 @@ def parser():
 def get_config():
     args = parser().parse_args()
     with open(args.config, "r") as config_file:
-        config = yaml.safe_load(config_file)
+        config: Dict[str, Any] = yaml.safe_load(config_file)
     if args.num_games is not None:
         config["num_games"] = args.num_games
+    config["direct_start"] = args.direct_start
+    config["direct_exit"] = args.direct_exit
     return config
 
 
@@ -252,10 +271,14 @@ if __name__ == "__main__":
     root = tk.Tk()
     display_board = GameBoard(root, ccgame.size, ccgame.size * 2 - 1, ccgame.board)
     display_board.pack(side="top", fill="both", expand=True, padx=4, pady=4)
-    B = tk.Button(
-        display_board,
-        text="Start",
-        command=lambda: callback(ccgame=ccgame, config=config, log_dir=log_dir),
-    )
-    B.pack()
+
+    if config.get("direct_start", False):
+        callback(ccgame=ccgame, config=config, log_dir=log_dir)
+    else:
+        B = tk.Button(
+            display_board,
+            text="Start",
+            command=lambda: callback(ccgame=ccgame, config=config, log_dir=log_dir),
+        )
+        B.pack()
     root.mainloop()
