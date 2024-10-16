@@ -1,5 +1,6 @@
 from typing import List, Optional, Tuple, Dict, Callable
 
+
 class Board(object):
     """
     Board class represents a game board for a two-player game.
@@ -16,8 +17,8 @@ class Board(object):
         """
         assert piece_rows < size
 
-        self.player1_pos = {'(2, 1)': False, '(2, 2)': False}
-        self.player2_pos = {'(18, 1)': False, '(18, 2)': False}
+        self.player1_pos = {"(2, 1)": False, "(2, 2)": False}
+        self.player2_pos = {"(18, 1)": False, "(18, 2)": False}
 
         self.size = size
         self.piece_rows = piece_rows
@@ -198,10 +199,16 @@ class Board(object):
             list: A list of positions occupied by the player's pieces.
         """
         return [
-            pos for pos, piece in self.board_status.items() if piece == player or piece == player + 2
+            pos
+            for pos, piece in self.board_status.items()
+            if piece == player or piece == player + 2
         ]
 
-    def getOneDirectionHopPosition(self, pos: Tuple[int, int], dir_func: Callable[[Tuple[int, int]], Optional[Tuple[int, int]]]) -> Optional[Tuple[int, int]]:
+    def getOneDirectionHopPosition(
+        self,
+        pos: Tuple[int, int],
+        dir_func: Callable[[Tuple[int, int]], Optional[Tuple[int, int]]],
+    ) -> Optional[Tuple[int, int]]:
         """
         Returns the possible target hop position in the direction designated by dir_func.
 
@@ -226,7 +233,11 @@ class Board(object):
                     break
                 target_position = dir_func(target_position)
                 count -= 1
-            if count == 0 and target_position is not None and self.board_status[target_position] == 0:
+            if (
+                count == 0
+                and target_position is not None
+                and self.board_status[target_position] == 0
+            ):
                 return target_position
 
     def getOneHopPositions(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
@@ -283,12 +294,18 @@ class Board(object):
 
         for row in range(1, self.piece_rows + 1):
             for col in range(1, self.getColNum(row) + 1):
-                if self.board_status[(row, col)] == 3 or self.board_status[(row, col)] == 1:
+                if (
+                    self.board_status[(row, col)] == 3
+                    or self.board_status[(row, col)] == 1
+                ):
                     player1_score += 1
 
         for row in range(self.size * 2 - self.piece_rows, self.size * 2):
             for col in range(1, self.getColNum(row) + 1):
-                if self.board_status[(row, col)] == 4 or self.board_status[(row, col)] == 2:
+                if (
+                    self.board_status[(row, col)] == 4
+                    or self.board_status[(row, col)] == 2
+                ):
                     player2_score += 1
 
         if player1_score > player2_score:
@@ -325,7 +342,10 @@ class Board(object):
         else:
             for row in range(self.size * 2 - self.piece_rows, self.size * 2):
                 for col in range(1, self.getColNum(row) + 1):
-                    if row == self.size * 2 - self.piece_rows + 2 and self.board_status[(row, col)] == 4:
+                    if (
+                        row == self.size * 2 - self.piece_rows + 2
+                        and self.board_status[(row, col)] == 4
+                    ):
                         continue
                     elif self.board_status[(row, col)] == 2:
                         continue
@@ -353,7 +373,7 @@ class Board(object):
         if player_2_reached:
             return (True, 2)
         return (False, None)
-    
+
     def as_formatted_string(self) -> str:
         """
         Returns the board state as a formatted string.
@@ -361,36 +381,36 @@ class Board(object):
         Returns:
             str: The formatted string representing the board state.
         """
-        result = ''
+        result = ""
         for row in range(1, self.size + 1):
-            result += ' ' * (self.size - row)
+            result += " " * (self.size - row)
             for col in range(1, self.getColNum(row) + 1):
-                result += str(self.board_status[(row, col)]) + ' '
-            result += '\n'
+                result += str(self.board_status[(row, col)]) + " "
+            result += "\n"
 
         for row in range(self.size + 1, self.size * 2):
-            result += ' ' * (row - self.size)
+            result += " " * (row - self.size)
             for col in range(1, self.getColNum(row) + 1):
-                result += str(self.board_status[(row, col)]) + ' '
-            result += '\n'
+                result += str(self.board_status[(row, col)]) + " "
+            result += "\n"
 
-        return "\n".join(map(lambda s: s.rstrip(), result.split('\n'))).rstrip("\n")
+        return "\n".join(map(lambda s: s.rstrip(), result.split("\n"))).rstrip("\n")
 
     def printBoard(self):
         """
         Prints the current state of the board.
         """
         for row in range(1, self.size + 1):
-            print(' ' * (self.size - row), end=' ')
+            print(" " * (self.size - row), end=" ")
             for col in range(1, self.getColNum(row) + 1):
-                print(str(self.board_status[(row, col)]), end=' ')
+                print(str(self.board_status[(row, col)]), end=" ")
 
             print()
 
         for row in range(self.size + 1, self.size * 2):
-            print(' ' * (row - self.size), end=' ')
+            print(" " * (row - self.size), end=" ")
             for col in range(1, self.getColNum(row) + 1):
-                print(str(self.board_status[(row, col)]), end=' ')
+                print(str(self.board_status[(row, col)]), end=" ")
 
             print()
 
@@ -400,15 +420,15 @@ class Board(object):
         """
         for row in range(1, self.size + 1):
             for col in range(1, self.getColNum(row) + 1):
-                print(str(self.board_status[(row, col)]), end=' ')
+                print(str(self.board_status[(row, col)]), end=" ")
 
-            print('\n', end=' ')
+            print("\n", end=" ")
 
         for row in range(self.size + 1, self.size * 2):
             for col in range(1, self.getColNum(row) + 1):
-                print(str(self.board_status[(row, col)]), end=' ')
+                print(str(self.board_status[(row, col)]), end=" ")
 
-            print('\n', end=' ')
+            print("\n", end=" ")
 
 
 def test_winning():
@@ -418,7 +438,6 @@ def test_winning():
             test_board.board_status[pos] = 0
 
     test_board = Board(size=10, piece_rows=4, max_iter=200)
-    
 
     # 1. 先手方在区域内棋子数量3，多于后手方的2，先手方在超时后胜利，测试通过
     clear_board(test_board)
@@ -429,25 +448,23 @@ def test_winning():
     test_board.board_status[(18, 1)] = 2
 
     print("3 vs 2")
-    print(f"{test_board.ifPlayerWin(1, 200) = }") # expected: False, got: False
-    print(f"{test_board.ifPlayerWin(2, 200) = }") # expected: False, got: False
-    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: True, got: 1
-    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: False, got: False
-
+    print(f"{test_board.ifPlayerWin(1, 200) = }")  # expected: False, got: False
+    print(f"{test_board.ifPlayerWin(2, 200) = }")  # expected: False, got: False
+    print(f"{test_board.ifPlayerWin(1, 201) = }")  # expected: True, got: 1
+    print(f"{test_board.ifPlayerWin(2, 201) = }")  # expected: False, got: False
 
     # 2. 先手方在区域内棋子数量2，等于后手方的2，超时后应该是平局，但ifPlayerWin(2, 201)返回True
     for pos, _ in test_board.board_status.items():
         test_board.board_status[pos] = 0
-    
+
     test_board.board_status[(1, 1)] = 1
     test_board.board_status[(2, 1)] = 1
     test_board.board_status[(19, 1)] = 2
     test_board.board_status[(18, 1)] = 2
 
-
     print("2 vs 2")
-    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: False, got 0
-    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: False, got True 
+    print(f"{test_board.ifPlayerWin(1, 201) = }")  # expected: False, got 0
+    print(f"{test_board.ifPlayerWin(2, 201) = }")  # expected: False, got True
 
     # 3. 先手方在区域内棋子数量2，少于后手方的3，后手方在超时后胜利，测试通过
     clear_board(test_board)
@@ -458,8 +475,8 @@ def test_winning():
     test_board.board_status[(17, 1)] = 2
 
     print("2 vs 3")
-    print(f"{test_board.ifPlayerWin(1, 201) = }") # expected: False, got: 0
-    print(f"{test_board.ifPlayerWin(2, 201) = }") # expected: True, got: True
+    print(f"{test_board.ifPlayerWin(1, 201) = }")  # expected: False, got: 0
+    print(f"{test_board.ifPlayerWin(2, 201) = }")  # expected: True, got: True
 
     # 4. 模拟先手获胜
     clear_board(test_board)
@@ -469,12 +486,12 @@ def test_winning():
         test_board.board_status[pos] = 1
     for pos in special_dests:
         test_board.board_status[pos] = 3
-    
+
     print("simulate player 1 win")
-    print(f"{test_board.ifPlayerWin(1, 20) = }") # expected: True, got: True
+    print(f"{test_board.ifPlayerWin(1, 20) = }")  # expected: True, got: True
     print(test_board.as_formatted_string())
     print(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_winning()

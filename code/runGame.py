@@ -1,22 +1,27 @@
 import argparse
-from copy import deepcopy
+import datetime
 import json
+import time
+import tkinter as tk
+import pathlib
 import yaml
 
-from agent import *
-from game import ChineseChecker
-from board import Board
-# import datetime
-import tkinter as tk
-from UI import GameBoard
-import time
-import datetime
-import pathlib
-
-from typing import Callable, Dict, Any, List, Optional
+from copy import deepcopy
 from collections import namedtuple
+from typing import Callable, Dict, Any, List, Optional
 
-Run_game_result = namedtuple("Run_game_result", ["winner", "iter", "board", "time_used", "iter_time_list"], defaults=[0, 0, None, None, None])
+from agent import *
+from board import Board
+from game import ChineseChecker
+from UI import GameBoard
+
+
+
+Run_game_result = namedtuple(
+    "Run_game_result",
+    ["winner", "iter", "board", "time_used", "iter_time_list"],
+    defaults=[0, 0, None, None, None],
+)
 
 
 def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result:
@@ -117,18 +122,7 @@ def simulateMultipleGames(
         run_result = runGame(ccgame, agents_dict)
         print(run_result)
         ret.append(run_result)
-    #     winner, iter, board = run_result
-    #     if winner == 1:
-    #         win_times_P1 += 1
-    #     elif winner == 2:
-    #         win_times_P2 += 1
-    #     elif winner == 0:
-    #         tie_times += 1
-    #     print("game", i + 1, "finished", "winner is player ", run_result)
-    # print("In", simulation_times, "simulations:")
-    # print("winning times: for player 1 is ", win_times_P1)
-    # print("winning times: for player 2 is ", win_times_P2)
-    # print("Tie times:", tie_times)
+
     return ret
 
 
@@ -186,17 +180,6 @@ def callback(
 
     if root is not None:
         root.destroy()
-
-    # simpleGreedyAgent = SimpleGreedyAgent(ccgame)
-    # simpleGreedyAgent1 = SimpleGreedyAgent(ccgame)
-    # randomAgent = RandomAgent(ccgame)
-    # teamAgent = YourAgent(ccgame)
-
-    # Player 1 first move, Player 2 second move
-    # YourAgent need to test as both player 1 and player 2
-    # simulateMultipleGames({1: simpleGreedyAgent1, 2: simpleGreedyAgent}, 1, ccgame)
-    # simulateMultipleGames({1: simpleGreedyAgent, 2: teamAgent}, 1, ccgame)
-    # simulateMultipleGames({1: teamAgent, 2: simpleGreedyAgent}, 1, ccgame)
 
 
 def getAgentCls(agent_name: str) -> Callable[..., Agent]:

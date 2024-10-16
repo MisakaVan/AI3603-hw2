@@ -1,7 +1,8 @@
-from board import Board
 import copy
-
 from typing import List, Tuple
+
+from board import Board
+
 
 State = Tuple[int, Board] | Tuple[int, Board, bool]
 
@@ -71,7 +72,9 @@ class ChineseChecker(object):
 
         return action_list
 
-    def opp_actions(self, state: State) -> List[Tuple[Tuple[int, int], Tuple[int, int]]]:
+    def opp_actions(
+        self, state: State
+    ) -> List[Tuple[Tuple[int, int], Tuple[int, int]]]:
         """
         Returns a list of possible actions for the opponent in the given state.
 
@@ -111,7 +114,9 @@ class ChineseChecker(object):
         """
         return state[0]
 
-    def succ(self, state: State, action: Tuple[Tuple[int, int], Tuple[int, int]]) -> Tuple[int, Board, bool]:
+    def succ(
+        self, state: State, action: Tuple[Tuple[int, int], Tuple[int, int]]
+    ) -> Tuple[int, Board, bool]:
         """
         Returns the successor state after applying the given action for the current player.
 
@@ -127,11 +132,19 @@ class ChineseChecker(object):
         board = copy.deepcopy(state[1])
         board.board_status[action[1]] = board.board_status[action[0]]
 
-        if str(action[1]) in self.board.player1_pos and board.board_status[action[1]] == 3 and player == 1:
+        if (
+            str(action[1]) in self.board.player1_pos
+            and board.board_status[action[1]] == 3
+            and player == 1
+        ):
             if self.board.player1_pos[str(action[1])] == False:
                 move_opp = True
 
-        elif str(action[1]) in self.board.player2_pos and board.board_status[action[1]] == 4 and player == 2:
+        elif (
+            str(action[1]) in self.board.player2_pos
+            and board.board_status[action[1]] == 4
+            and player == 2
+        ):
             if self.board.player2_pos[str(action[1])] == False:
                 move_opp = True
 
@@ -140,11 +153,11 @@ class ChineseChecker(object):
         return (3 - player, board, move_opp)
 
     def opp_succ(
-            self,
-            state: State,
-            action: Tuple[Tuple[int, int], Tuple[int, int]],
-            last_action: Tuple[Tuple[int, int], Tuple[int, int]]
-        ) -> Tuple[int, Board, bool]:
+        self,
+        state: State,
+        action: Tuple[Tuple[int, int], Tuple[int, int]],
+        last_action: Tuple[Tuple[int, int], Tuple[int, int]],
+    ) -> Tuple[int, Board, bool]:
         """
         Returns the successor state after applying the given action for the opponent.
 
