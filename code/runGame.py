@@ -221,7 +221,7 @@ def parser():
         "--config",
         type=str,
         default="config.yaml",
-        help="Path to the configuration file",
+        help="Path to the configuration file. Default is 'config.yaml'",
     )
     _parser.add_argument(
         "--num-games",
