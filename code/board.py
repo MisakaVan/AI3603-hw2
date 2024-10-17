@@ -381,17 +381,19 @@ class Board(object):
         Returns:
             str: The formatted string representing the board state.
         """
+        symbol_lut = {0: ".", 1: "1", 2: "2", 3: "3", 4: "4"}
+
         result = ""
         for row in range(1, self.size + 1):
             result += " " * (self.size - row)
             for col in range(1, self.getColNum(row) + 1):
-                result += str(self.board_status[(row, col)]) + " "
+                result += symbol_lut[self.board_status[(row, col)]] + " "
             result += "\n"
 
         for row in range(self.size + 1, self.size * 2):
             result += " " * (row - self.size)
             for col in range(1, self.getColNum(row) + 1):
-                result += str(self.board_status[(row, col)]) + " "
+                result += symbol_lut[self.board_status[(row, col)]] + " "
             result += "\n"
 
         return "\n".join(map(lambda s: s.rstrip(), result.split("\n"))).rstrip("\n")
