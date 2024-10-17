@@ -103,6 +103,8 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         chess_count_res = state[1].compare_piece_num()
         winner = 1 if chess_count_res == 1 else 2 if chess_count_res == -1 else 0
         ret = ret._replace(winner=winner)
+        logger.debug(f"new winner: {winner}")
+        logger.debug(f"{ret = }")
 
     logger.info(f"Game over! Winner: {winner}")
     logger.info(f"Total time used: {end - start}")
@@ -259,7 +261,7 @@ if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - [ %(levelname)s ] %(message)s")
+    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(name)s - [ %(levelname)s ] %(message)s", filename="lastrun.log", filemode="w")
 
     config = get_config()
 
