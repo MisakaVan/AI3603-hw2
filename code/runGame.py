@@ -96,12 +96,14 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
     logger.debug(f"{(is_end, winner) = }")
 
     if is_end:
+        logger.info(f"Game over at {iter=} with winner {winner}")
         ret = ret._replace(winner=winner)
         # return winner  # type: ignore
     else:  # stuck situation
         # print("stuck!")
         chess_count_res = state[1].compare_piece_num()
         winner = 1 if chess_count_res == 1 else 2 if chess_count_res == -1 else 0
+        logger.info(f"Game stuck at {iter=} with winner {winner}")
         ret = ret._replace(winner=winner)
         logger.debug(f"new winner: {winner}")
         logger.debug(f"{ret = }")
