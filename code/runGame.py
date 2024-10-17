@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import numpy as np
 import logging
 import json
 import time
@@ -224,15 +225,33 @@ def callback(
     results = simulateMultipleGames(agent_dict, num_games, ccgame)
 
     parsed_results = [r._asdict() for r in results]
-    no_time_series = True
+    no_time_series = False
     if no_time_series:
         for r in parsed_results:
             r.pop("iter_time_list")
+    else:
+        for r in parsed_results:
+            # pick the odd number of iterations as the player 1's time
+            player1_series = r["iter_time_list"][::2]
+            # avg and var
+            r["player1_time_avg"] = np.mean(player1_series)
+            r["player1_time_var"] = np.var(player1_series)
+            # high 10%, 5%, 1%
+            r["player1_time_high10"] = np.percentile(player1_series, 90)
+            r["player1_time_high5"] = np.percentile(player1_series, 95)
+            r["player1_time_high1"] = np.percentile(player1_series, 99)
+
+
 
     overview = {
         "player1_wins": sum(1 for r in results if r.winner == 1),
         "player2_wins": sum(1 for r in results if r.winner == 2),
         "ties": sum(1 for r in results if r.winner == 0),
+        "match_iter_avg": np.mean([r.iter for r in results]),
+        "match_iter_var": np.var([r.iter for r in results]),
+        "match_time_avg": np.mean([r.time_used for r in results]),
+        "match_time_var": np.var([r.time_used for r in results]),
+        "player1_time_avg": np.mean([r["player1_time_avg"] for r in parsed_results]),
     }
 
 
