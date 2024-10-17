@@ -268,7 +268,6 @@ if __name__ == "__main__":
     """
     The script initializes a Chinese Checkers game and a Tkinter GUI. It sets up a button to start the game simulation.
     """
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(name)s - [ %(levelname)s ] %(message)s", filename="lastrun.log", filemode="w")
 
     config = get_config()
 
@@ -276,6 +275,15 @@ if __name__ == "__main__":
     run_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + f"_{config['title']}"
     log_dir = log_dir / run_name
     log_dir.mkdir(parents=True, exist_ok=True)
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(asctime)s - %(name)-10.10s - [%(levelname)-5.5s] %(message)s",
+        handlers=[
+            logging.FileHandler(log_dir / "run.log"),
+            logging.StreamHandler(),
+        ]
+    )
 
     ccgame = ChineseChecker(
         size=config.get("board_size", 10), piece_rows=config.get("piece_rows", 4)
