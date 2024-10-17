@@ -92,7 +92,9 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
         iter_time_list=iter_times,
     )
 
-    is_end, winner = ccgame.board.isEnd(iter)
+    is_end, winner = state[1].isEnd(iter)
+    logger.debug(f"{(is_end, winner) = }")
+
     if is_end:
         ret = ret._replace(winner=winner)
         # return winner  # type: ignore
