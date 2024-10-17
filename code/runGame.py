@@ -4,7 +4,10 @@ import logging
 import json
 import time
 import tkinter as tk
+import tqdm
 import pathlib
+import tqdm.contrib
+import tqdm.contrib.logging
 import yaml
 
 from copy import deepcopy
@@ -20,6 +23,18 @@ import tkinter as tk
 from UI import GameBoard
 
 logger = logging.getLogger(__name__)
+
+class TqdmLoggingHandler(logging.Handler):
+    def __init__(self, level=logging.NOTSET):
+        super().__init__(level)
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            tqdm.tqdm.write(msg)
+            self.flush()
+        except Exception:
+            self.handleError(record) 
 
 
 Run_game_result = namedtuple(
@@ -46,8 +61,17 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> Run_game_result
     iter = 0
     start = time.time()
     iter_times = []
+    inner_bar = tqdm.trange(
+        max_iter,
+        desc="Game Iteration",
+        dynamic_ncols=True,
+        position=1,
+    )
+
     while (not ccgame.isEnd(state, iter)) and iter < max_iter:
+        time.sleep(0.05)
         iter += 1
+        inner_bar.update(1)
         logger.info(f"Iteration {iter}\n{state[1].as_formatted_string()}")
 
         display_board.board = state[1]
@@ -136,7 +160,14 @@ def simulateMultipleGames(
     # utility_sum = 0
     ret: List[Run_game_result] = []
 
-    for i in range(simulation_times):
+    outer_bar = tqdm.trange(
+        simulation_times, 
+        desc="Simulations",
+        dynamic_ncols=True,
+        position=0,
+    )
+
+    for i in outer_bar:
         logger.info(f"=== Game {i} ===")
 
         run_result = runGame(ccgame, agents_dict)
@@ -304,7 +335,7 @@ if __name__ == "__main__":
         format="%(asctime)s - %(name)-10.10s - [%(levelname)-5.5s] %(message)s",
         handlers=[
             logging.FileHandler(log_dir / "run.log"),
-            logging.StreamHandler(),
+            TqdmLoggingHandler(),
         ]
     )
 
