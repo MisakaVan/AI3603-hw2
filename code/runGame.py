@@ -57,7 +57,7 @@ def runGame(ccgame: ChineseChecker, agents: Dict[int, Agent]) -> int:
     # end = datetime.datetime.now()
     # if ccgame.isEnd(state, iter):
     #     return state[1].isEnd(iter)[1]  # return winner
-    is_end, winner = ccgame.board.isEnd(iter)
+    is_end, winner = state[1].isEnd(iter)
     if is_end:
         return winner  # type: ignore
     else:  # stuck situation
