@@ -242,6 +242,12 @@ def parser():
         action="store_true",
         help="Exit the game directly without having to close the window or ctrl+c.",
     )
+    _parser.add_argument(
+        "--title",
+        type=str,
+        default="debug",
+        help="Distinguish the run of the game: e.g. debug, v1.0, etc. Default is 'run'.",
+    )
 
     return _parser
 
@@ -254,6 +260,7 @@ def get_config():
         config["num_games"] = args.num_games
     config["direct_start"] = args.direct_start
     config["direct_exit"] = args.direct_exit
+    config["title"] = args.title
     return config
 
 
@@ -266,7 +273,7 @@ if __name__ == "__main__":
     config = get_config()
 
     log_dir = pathlib.Path("logs")
-    run_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    run_name = datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + f"_{config['title']}"
     log_dir = log_dir / run_name
     log_dir.mkdir(parents=True, exist_ok=True)
 
