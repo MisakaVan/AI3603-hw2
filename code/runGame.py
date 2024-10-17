@@ -179,9 +179,9 @@ def callback(
     }
 
     # try get agent1.params
-    if isinstance(agent_dict[1], YourAgent):
-        params = agent_dict[1].params
-    else:
+    try:
+        params = agent_dict[1].__getattribute__("params")
+    except AttributeError:
         params = None
 
     if log_dir is not None and params is not None:
