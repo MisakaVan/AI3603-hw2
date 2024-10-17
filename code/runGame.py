@@ -178,21 +178,38 @@ def callback(
         2: getAgentCls(agent2_type)(ccgame),
     }
 
+    # try get agent1.params
+    if isinstance(agent_dict[1], YourAgent):
+        params = agent_dict[1].params
+    else:
+        params = None
+
+    if log_dir is not None and params is not None:
+        json.dump(params, open(log_dir / "params.json", "w"), indent=4)
+
+
     num_games: int = config.get("num_games", 1)  # type: ignore
 
     results = simulateMultipleGames(agent_dict, num_games, ccgame)
 
     parsed_results = [r._asdict() for r in results]
+    no_time_series = True
+    if no_time_series:
+        for r in parsed_results:
+            r.pop("iter_time_list")
+
     overview = {
         "player1_wins": sum(1 for r in results if r.winner == 1),
         "player2_wins": sum(1 for r in results if r.winner == 2),
         "ties": sum(1 for r in results if r.winner == 0),
     }
 
+
     if log_dir is not None:
         with open(log_dir / "results.json", "w") as f:
             json.dump(
                 {
+                    "params": params,
                     "overview": overview,
                     "results": parsed_results,
                 },
