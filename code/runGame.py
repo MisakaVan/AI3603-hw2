@@ -155,10 +155,8 @@ def simulateMultipleGames(
     Returns:
         None
     """
-    win_times_P1 = 0
-    win_times_P2 = 0
-    tie_times = 0
-    # utility_sum = 0
+    tie_p1_p2_count = [0, 0, 0] # index 0, 1, 2 for tie, player1 win, player2 win respectively
+
     ret: List[Run_game_result] = []
 
     outer_bar = tqdm.trange(
@@ -167,6 +165,7 @@ def simulateMultipleGames(
         dynamic_ncols=True,
         position=0,
     )
+    outer_bar.set_postfix_str(f"T|P1:P2: 0|0:0")
 
     for i in outer_bar:
         logger.info(f"=== Game {i} ===")
@@ -175,6 +174,10 @@ def simulateMultipleGames(
         # print(run_result)
         ret.append(run_result)
 
+        winner = run_result.winner
+        tie_p1_p2_count[winner] += 1
+        tie_count, p1_count, p2_count = tie_p1_p2_count
+        outer_bar.set_postfix_str(f"T|P1:P2: {tie_count}|{p1_count}:{p2_count}")
     return ret
 
 
